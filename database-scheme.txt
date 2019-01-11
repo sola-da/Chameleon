@@ -1,0 +1,67 @@
+'chameleon' database:
+	table 'samples'
+	table 'results'
+
+____________________________________________________________
+
+table 'samples':
++------------------+--------------+------+-----+---------+------------------------------------------------------------------------+
+| Field            | Type         | Null | Key | Default | Extra                                                                  |
++------------------+--------------+------+-----+---------+------------------------------------------------------------------------+
+| sample_id        | mediumint(9) | NO   | PRI | NULL    | auto_increment
+| filename         | char(250)    | NO   |     | NULL    |                                                                        |
+| creation_date    | char(20)     | NO   |     | NULL    | format: %Y-%m-%d. e.g. 2017-06-17.
+| module_name      | char(100)    | NO   |     | NULL    | the MS exploit module name. e.g. adobe_toolbutton.
+| shellcode        | char(30)     | YES  |     | NULL    | possible values: 'reverse_bind', 'powershell', 'calc', or 'none'.      |
+| exploit          | char(30)     | YES  |     | NULL    | possible values: 'yes', 'remove_trigger', or 'no'.
+| sha256           | char(70)     | YES  |     | NULL    |                                                                        |
+| sha1             | char(50)     | YES  |     | NULL    |                                                                        |
+| md5              | char(40)     | YES  |     | NULL    |                                                                        |
+| expected_outcome | char(30)     | YES  |     | NULL    | possible values: 'malicious', 'non-malicious'.
++------------------+--------------+------+-----+---------+------------------------------------------------------------------------+
+
+table 'evasions':
++------------+--------------+------+-----+---------+----------------+
+| Field      | Type         | Null | Key | Default | Extra          |
++------------+--------------+------+-----+---------+----------------+
+| evasion_id | mediumint(9) | NO   | PRI | NULL    | auto_increment |
+| sample_id  | mediumint(9) | NO   | MUL | NULL    | foreign key to 'samples' table.
+| name       | char(50)     | NO   |     | NULL    | 'none', or evasions as defined in 'testcases.py'. one row per evasion.
++------------+--------------+------+-----+---------+----------------+
+
+table 'signals':
++-----------+--------------+------+-----+---------+----------------+
+| Field     | Type         | Null | Key | Default | Extra          |
++-----------+--------------+------+-----+---------+----------------+
+| signal_id | mediumint(9) | NO   | PRI | NULL    | auto_increment |
+| sample_id | mediumint(9) | NO   | MUL | NULL    | foreign key to 'samples' table.
+| name      | char(50)     | NO   |     | NULL    | 'network_activity', 'process_spawn', 'file_write', or 'none'. one row per signal.
++-----------+--------------+------+-----+---------+----------------+
+
+____________________________________________________________
+
+table 'results':
+
++--------------------------+--------------+------+-----+---------+----------------+
+| Field                    | Type         | Null | Key | Default | Extra          |
++--------------------------+--------------+------+-----+---------+----------------+
+| result_id                | mediumint(9) | NO   | PRI | NULL    | auto_increment |
+| sample_id                | mediumint(9) | NO   | MUL | NULL    | foreign key to 'samples' table.
+| analyzer_name            | char(50)     | YES  |     | NULL    | arbitrary string that represents an analyzer.
+| analyzer_version         | char(50)     | YES  |     | NULL    | leave it open if there's none.
+| vendor_analysis_id       | char(100)    | YES  |     | NULL    | if the analyzer reports an ID to retrieve the scan report later on, put it here.
+| analysis_datetime        | char(20)     | YES  |     | NULL    | scan datetime in the sandbox's local timezone. format %Y-%m-%dT%H:%M:%S (e.g. 2017-06-20T09:36:23). this is important for 'tod' evasion.
+| windows_version          | char(20)     | YES  |     | NULL    | sandbox' Windows version or 'not_applicable'.
+| adobe_version            | char(20)     | YES  |     | NULL    | sandbox' Adobe Reader version or 'not_applicable'.
+| observed_outcome         | char(30)     | YES  |     | NULL    | 'non-malicious' or 'malicious'. for the analyzers that report a score, rather than a binary value, the score should be mapped to the binary value malicious or not.
+| observed_outcome_comment | char(200)    | YES  |     | NULL    | any comment you'd like to add for a scanned sample.
++--------------------------+--------------+------+-----+---------+----------------+
+
+table 'observed_signals':
++-----------+--------------+------+-----+---------+----------------+
+| Field     | Type         | Null | Key | Default | Extra          |
++-----------+--------------+------+-----+---------+----------------+
+| signal_id | mediumint(9) | NO   | PRI | NULL    | auto_increment |
+| result_id | mediumint(9) | NO   | MUL | NULL    | foreign key to 'results' table.
+| name      | char(50)     | NO   |     | NULL    | name of the observed signal. one row per signal. possible values are: 'network_activity', 'process_spawn', 'file_write', 'none', or 'not_applicable'.
++-----------+--------------+------+-----+---------+----------------+
