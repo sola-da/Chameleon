@@ -16,10 +16,13 @@ The following packages are needed to use the framework.
 Linux/macOS packages:
 - mysql-server (>= 10.1.26)
 - metasploit-framework (>= 4.16.7)
+- ruby (>= 2.3.3)
+- pip (>= 9.0.1)
 - bundler (>= 1.15.1)
 
 Python packages (`pip install`):
 - PyMySQL (>= 0.7.11)
+- pytz (>= 2018.9)
 
 
 
@@ -35,7 +38,7 @@ metasploit-framework# bundle
 ```
 3. Clone this repository, go its directory, and copy the content of `metasploit_modules` directory to `msf4`:
 ```sh
-Chameleon# cp -r ./src/generate/metasploit_modules/* ~/.msf4
+Chameleon# cp -r ./src/metasploit_modules/* ~/.msf4
 ```
 4. In Chameleon `src` directory, run `generator.py` to generate the test suite.
 ```sh
