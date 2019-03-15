@@ -4,7 +4,7 @@ Chameleon, a framework for testing the anti-evasion capabilities of PDF malware 
 
 ![chameleon_framework_overview](https://github.com/sola-da/Chameleon/blob/master/.images/overview.png "Overview of the Chameleon framework and its four steps")
 
-Moreover, the set of 1395 malicious and evasive PDF files that is used in our study is available. The set can be used to benchmark a malware scanner in its anti-evasion abilities. Email Saeed Ehteshamifar (salpha.2004@gmail.com) if you're interested in obtaining the set. 
+Moreover, the set of 1395 malicious and evasive PDF files that is used in our study is available. The set can be used to benchmark a malware scanner in its anti-evasion abilities. Email Saeed Ehteshamifar (salpha.2004@gmail.com) if you're interested in obtaining the set. For more details about the framework refer to [our paper](https://arxiv.org/pdf/1901.05674).
 
 
 ## Usage
